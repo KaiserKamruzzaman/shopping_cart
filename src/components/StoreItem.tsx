@@ -5,7 +5,8 @@ import { RootState } from "../context/store";
 // import { decrement, increment } from './counterSlice'
 import {
   increaseCartQuantity,
-  getItemQuantity,
+  decreaseCartQuantity,
+  removeItemFromCart,
 } from "../context/shoppingCartCounter";
 import { useState } from "react";
 
@@ -20,7 +21,6 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
   const count = useSelector((state: RootState) => state.counter);
   const dispatch = useDispatch();
 
-  const quantity = 0;
   return (
     <Card className="h-100">
       <Card.Img
@@ -51,7 +51,9 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
                 className="d-flex align-items-center justify_content-center"
                 style={{ gap: ".5rem" }}
               >
-                <Button>+</Button>
+                <Button onClick={() => dispatch(increaseCartQuantity(id))}>
+                  +
+                </Button>
                 <div>
                   <span className="fs-3">
                     {count.cartItems.map((item) => {
@@ -62,9 +64,15 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
                   </span>
                   in cart
                 </div>
-                <Button>-</Button>
+                <Button onClick={() => dispatch(decreaseCartQuantity(id))}>
+                  -
+                </Button>
               </div>
-              <Button variant="danger" size="sm">
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => dispatch(removeItemFromCart(id))}
+              >
                 Remove
               </Button>
             </div>

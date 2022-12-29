@@ -1,8 +1,12 @@
 import React from "react";
 import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../context/store";
 
 export const Navbar = () => {
+  const count = useSelector((state: RootState) => state.counter);
+
   return (
     <NavbarBs className="bg-white shadow-sm mb-3" sticky="top">
       <Container>
@@ -44,7 +48,7 @@ export const Navbar = () => {
               transform: "translate(25%,25%)",
             }}
           >
-            3
+            {count.quantity}
           </div>
         </Button>
       </Container>

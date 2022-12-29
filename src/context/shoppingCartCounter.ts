@@ -27,7 +27,7 @@ export const counterSlice = createSlice({
       if (state.cartItems.find((item) => item.id == action.payload) == null) {
         console.log("kisu pai nai..");
         state.cartItems.push({ id: action.payload, quantity: 1 });
-        state.quantity += 1;
+        state.quantity = 1;
       } else {
         state.cartItems.map((item, index) => {
           if (item.id == action.payload) {
@@ -37,12 +37,38 @@ export const counterSlice = createSlice({
         state.quantity += 1;
       }
     },
-    // decrement: (state, action: PayloadAction<number>) => {
-    //   state.quantity -= 1;
-    // },
+    decreaseCartQuantity: (state, action: PayloadAction<number>) => {
+      console.log("inside decrease...");
+      if (
+        state.cartItems.find((item) => item.id == action.payload)?.quantity == 1
+      ) {
+        console.log("ekhn delete korte hbe..");
+        state.cartItems = state.cartItems.filter(
+          (item) => item.id !== action.payload
+        );
+        state.quantity -= 1;
+      } else {
+        state.cartItems.map((item, index) => {
+          if (item.id == action.payload) {
+            state.cartItems[index] = { ...item, quantity: item.quantity - 1 };
+          }
+        });
+        state.quantity -= 1;
+      }
+    },
+    removeItemFromCart: (state, action: PayloadAction<number>) => {
+      console.log("first");
+      state.cartItems = state.cartItems.filter(
+        (item) => item.id !== action.payload
+      );
+    },
   },
 });
 
-export const { increaseCartQuantity, getItemQuantity } = counterSlice.actions;
+export const {
+  increaseCartQuantity,
+  decreaseCartQuantity,
+  removeItemFromCart,
+} = counterSlice.actions;
 
 export default counterSlice.reducer;
