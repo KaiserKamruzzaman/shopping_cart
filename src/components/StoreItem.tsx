@@ -1,5 +1,13 @@
 import { Button, Card } from "react-bootstrap";
 import { formatCurrency } from "../utilities/formatCurrency";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../context/store";
+// import { decrement, increment } from './counterSlice'
+import {
+  increaseCartQuantity,
+  getItemQuantity,
+} from "../context/shoppingCartCounter";
+import { useState } from "react";
 
 type StoreItemProps = {
   id: number;
@@ -9,6 +17,9 @@ type StoreItemProps = {
 };
 
 export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
+  const count = useSelector((state: RootState) => state.counter);
+  const dispatch = useDispatch();
+
   const quantity = 0;
   return (
     <Card className="h-100">
@@ -24,8 +35,13 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
           <span className="ms-2 text-muted">{formatCurrency(price)}</span>
         </Card.Title>
         <div className="mt-auto">
-          {quantity === 0 ? (
-            <Button className="w-100">Add to Cart</Button>
+          {count.quantity == 0 ? (
+            <Button
+              className="w-100"
+              onClick={() => dispatch(increaseCartQuantity(id))}
+            >
+              + Add to Cart
+            </Button>
           ) : (
             <div
               className="d-flex align-items-center flex-column"
@@ -37,7 +53,14 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
               >
                 <Button>+</Button>
                 <div>
-                  <span className="fs-3">{quantity}</span> in cart
+                  <span className="fs-3">
+                    {count.cartItems.map((item) => {
+                      if (item.id == id) {
+                        return item.quantity;
+                      }
+                    })}
+                  </span>
+                  in cart
                 </div>
                 <Button>-</Button>
               </div>
