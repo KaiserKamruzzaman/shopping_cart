@@ -27,7 +27,7 @@ export const counterSlice = createSlice({
       if (state.cartItems.find((item) => item.id == action.payload) == null) {
         console.log("kisu pai nai..");
         state.cartItems.push({ id: action.payload, quantity: 1 });
-        state.quantity = 1;
+        state.quantity += 1;
       } else {
         state.cartItems.map((item, index) => {
           if (item.id == action.payload) {
@@ -69,6 +69,7 @@ export const {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeItemFromCart,
+  getItemQuantity,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

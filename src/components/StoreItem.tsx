@@ -7,6 +7,7 @@ import {
   increaseCartQuantity,
   decreaseCartQuantity,
   removeItemFromCart,
+  getItemQuantity,
 } from "../context/shoppingCartCounter";
 import { useState } from "react";
 
@@ -19,6 +20,7 @@ type StoreItemProps = {
 
 export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
   const count = useSelector((state: RootState) => state.counter);
+  const [test, setTest] = useState(false);
   const dispatch = useDispatch();
 
   return (
@@ -35,7 +37,7 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
           <span className="ms-2 text-muted">{formatCurrency(price)}</span>
         </Card.Title>
         <div className="mt-auto">
-          {count.quantity == 0 ? (
+          {count.cartItems.find((item) => item.id == id) == null ? (
             <Button
               className="w-100"
               onClick={() => dispatch(increaseCartQuantity(id))}
