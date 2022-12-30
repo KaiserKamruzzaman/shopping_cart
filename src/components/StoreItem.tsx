@@ -8,6 +8,7 @@ import {
   decreaseCartQuantity,
   removeItemFromCart,
   getItemQuantity,
+  cartTotalQuantity,
 } from "../context/shoppingCartCounter";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ export const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
   const count = useSelector((state: RootState) => state.counter);
   const [test, setTest] = useState(false);
   const dispatch = useDispatch();
+  //   dispatch(cartTotalQuantity);
 
   return (
     <Card className="h-100">

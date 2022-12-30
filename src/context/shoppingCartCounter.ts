@@ -62,6 +62,11 @@ export const counterSlice = createSlice({
         (item) => item.id !== action.payload
       );
     },
+    cartTotalQuantity: (state) => {
+      state.cartItems.reduce((accumulator, item) => {
+        return (state.quantity = item.quantity + accumulator);
+      }, 0);
+    },
   },
 });
 
@@ -70,6 +75,7 @@ export const {
   decreaseCartQuantity,
   removeItemFromCart,
   getItemQuantity,
+  cartTotalQuantity,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
