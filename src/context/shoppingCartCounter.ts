@@ -57,6 +57,11 @@ export const counterSlice = createSlice({
       }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
+      state.cartItems.map((item) => {
+        if (item.id == action.payload) {
+          state.quantity = state.quantity - item.quantity;
+        }
+      });
       console.log("first");
       state.cartItems = state.cartItems.filter(
         (item) => item.id !== action.payload

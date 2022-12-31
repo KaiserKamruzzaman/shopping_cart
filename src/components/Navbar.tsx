@@ -4,9 +4,12 @@ import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../context/store";
 import { cartTotalQuantity } from "../context/shoppingCartCounter";
+import { cartShow, cartClose } from "../context/ShoppingCart";
 
 export const Navbar = () => {
   const count = useSelector((state: RootState) => state.counter);
+  const cartState = useSelector((state: RootState) => state.cart.isOpen);
+  console.log(cartState);
   const dispatch = useDispatch();
   //   dispatch(cartTotalQuantity);
 
@@ -29,6 +32,9 @@ export const Navbar = () => {
             style={{ width: "3rem", height: "3rem", position: "relative" }}
             variant="outline-primary"
             className="rounded-circle"
+            onClick={() => {
+              dispatch(cartShow());
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
