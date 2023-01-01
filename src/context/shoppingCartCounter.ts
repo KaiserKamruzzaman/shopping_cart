@@ -5,13 +5,21 @@ type CounterState = {
   id: number;
   quantity: number;
 };
+const items: CounterState[] =
+  localStorage.getItem("cartItems") !== null
+    ? JSON.parse(localStorage.getItem("cartItems") || "[]")
+    : [];
+const quantity: number =
+  localStorage.getItem("cartQuantity") !== null
+    ? JSON.parse(localStorage.getItem("cartQuantity") || "0")
+    : 0;
 
 const initialState: {
   cartItems: CounterState[];
   quantity: number;
 } = {
-  cartItems: [],
-  quantity: 0,
+  cartItems: items,
+  quantity: quantity,
 };
 
 export const counterSlice = createSlice({
@@ -28,13 +36,17 @@ export const counterSlice = createSlice({
         console.log("kisu pai nai..");
         state.cartItems.push({ id: action.payload, quantity: 1 });
         state.quantity += 1;
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        localStorage.setItem("cartQuantity", JSON.stringify(state.quantity));
       } else {
         state.cartItems.map((item, index) => {
           if (item.id == action.payload) {
             state.cartItems[index] = { ...item, quantity: item.quantity + 1 };
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
           }
         });
         state.quantity += 1;
+        localStorage.setItem("cartQuantity", JSON.stringify(state.quantity));
       }
     },
     decreaseCartQuantity: (state, action: PayloadAction<number>) => {
@@ -46,14 +58,20 @@ export const counterSlice = createSlice({
         state.cartItems = state.cartItems.filter(
           (item) => item.id !== action.payload
         );
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
         state.quantity -= 1;
+        localStorage.setItem("cartQuantity", JSON.stringify(state.quantity));
       } else {
         state.cartItems.map((item, index) => {
           if (item.id == action.payload) {
             state.cartItems[index] = { ...item, quantity: item.quantity - 1 };
           }
         });
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
         state.quantity -= 1;
+        localStorage.setItem("cartQuantity", JSON.stringify(state.quantity));
       }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
@@ -62,10 +80,13 @@ export const counterSlice = createSlice({
           state.quantity = state.quantity - item.quantity;
         }
       });
+      localStorage.setItem("cartQuantity", JSON.stringify(state.quantity));
+
       console.log("first");
       state.cartItems = state.cartItems.filter(
         (item) => item.id !== action.payload
       );
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     cartTotalQuantity: (state) => {
       state.cartItems.reduce((accumulator, item) => {
